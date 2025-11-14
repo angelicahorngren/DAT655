@@ -47,7 +47,7 @@ testCases :: [(String, Noise)]
 testCases =
   (,)
   <$> ["db1-small", "db1-large", "db2-small", "db2-large"]
-  <*> [1, 2, 5, 10]
+  <*> [1, 2, 5, 7, 10]
 
 tests :: TestTree
 tests = testGroup "rattack tests" $ map (uncurry mkTestCase) testCases
