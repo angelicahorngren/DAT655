@@ -23,7 +23,7 @@ comb k ns = filter ((k ==) . length) $ subsequences ns
 
 -- | Generates all possible combinations of indexes for a database of given @dbSize@.
 indexes :: Int -> [[Index]]
-indexes dbSize = undefined -- TODO: Implement this function
+indexes dbSize = concatMap (`comb` [0 .. dbSize - 1]) [1 .. dbSize]
 
 -- | Performs the noisy sums of all combinations of indexes for a given database @db@. It calls @add@.
 allSums :: DB -> Noise -> IO [ResultQuery]
