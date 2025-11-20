@@ -74,3 +74,17 @@ attack db noise = do
     let namesList = names db
     let candidatesWithNames = map (\c -> zip namesList c) candidates
     return candidatesWithNames
+
+-- | Task 7: What happens at different noise levels?
+
+-- | Hamming distance measures the how many patient HIV-values differ between two candidates. 
+-- The reconstruction attack works well when this distance is small. With low noise, most wrong 
+-- candidates are eliminated, so the correct candidate (or something very close to it) survives.
+-- As noise increases, more candidates will fit the noisy equations, and the minimum achievable 
+-- hamming distance increases and this also negatively affects runtime as it will take longer to
+-- compute them all.
+
+-- In our case we also noticed the runtime was much higher for the db1-large database compared 
+-- to the other databases. We believe this is due to the exponential complexity of our brute-force 
+-- algorithm. This means that when we go from db2-large with 11 rows (and thus 2048 candidates)
+-- to db1-large with 14 rows (and thus 16384 candidates), the runtime increases significantly.
