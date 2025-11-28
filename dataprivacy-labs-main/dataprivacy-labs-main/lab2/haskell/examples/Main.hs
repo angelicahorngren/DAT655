@@ -9,7 +9,7 @@ Description : Example usage of the Differential Privacy DSL with Adult Census Da
 This module demonstrates how to use the various components of the DSL
 with real census data, showing practical differential privacy applications.
 -}
-module Examples where
+module Main where
 
 import AdultDataset (
     Adult (..),

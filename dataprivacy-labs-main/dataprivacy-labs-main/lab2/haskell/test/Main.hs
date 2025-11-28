@@ -10,10 +10,11 @@ This module provides comprehensive tests for:
 2. Laplace mechanism noise accuracy and distribution properties
 3. Stability tracking at the type level
 -}
-module Tests where
+module Main where
 
 import Control.Exception (SomeException, evaluate, try)
 import Control.Monad (replicateM)
+import System.Exit (exitFailure)
 import Core (DPResult (..), Dataset (..), Epsilon)
 import GHC.TypeLits (KnownNat)
 import Measurements (dpCount, dpSum)
@@ -383,4 +384,4 @@ main = do
     success <- runAllTests
     if success
         then putStrLn "✓ Test suite completed successfully"
-        else putStrLn "✗ Test suite failed"
+        else putStrLn "✗ Test suite failed" >> exitFailure

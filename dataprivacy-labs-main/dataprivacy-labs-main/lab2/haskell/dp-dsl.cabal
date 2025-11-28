@@ -1,0 +1,61 @@
+cabal-version: 3.4
+
+name:       dp-dsl
+version:    0.1.0.0
+license:    MPL-2.0
+build-type: Simple
+
+library
+  default-language: Haskell2010
+  hs-source-dirs:   src
+
+  exposed-modules:
+    AdultDataset
+    Core
+    DP
+    Measurements
+    Noise
+    PrivacyTracker
+    Transformations
+
+  ghc-options:
+    -Wall
+
+  build-depends:
+    base                         >= 4.19 && <5
+    , containers                ^>= 0.7
+    , ghc-typelits-knownnat     ^>= 0.8.2
+    , ghc-typelits-natnormalise ^>= 0.9.1
+    , mtl                       ^>= 2.3.1
+    , mwc-random                ^>= 0.15.2
+    , random                    ^>= 1.3.1
+    , split                     ^>= 0.2.5
+    , statistics                ^>= 0.16.4
+    , vector                    ^>= 0.13.2
+
+executable examples
+  default-language: Haskell2010
+  hs-source-dirs:   examples
+  main-is:          Main.hs
+
+  build-depends:
+    base          >= 4.19 && <5
+    , containers ^>= 0.7
+    , dp-dsl
+
+test-suite dp-dsl-test
+  type: exitcode-stdio-1.0
+
+  default-language: Haskell2010
+  hs-source-dirs:   test
+  main-is:          Main.hs
+
+  ghc-options:
+    -Wall
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
+
+  build-depends:
+    base >= 4.19 && <5
+    , dp-dsl
