@@ -1,1 +1,2 @@
 tests: True
+with-compiler: ghc-9.10.3

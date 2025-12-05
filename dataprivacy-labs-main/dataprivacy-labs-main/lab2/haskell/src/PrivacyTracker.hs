@@ -23,6 +23,8 @@ import Control.Monad.IO.Class
 import Control.Monad.State
 import System.Random.MWC
 import Text.Printf
+import Control.Exception (throwIO)
+import Core (PrivacyError(..))
 
 -- ============================================================================
 -- Privacy State and Query Monad
@@ -60,17 +62,29 @@ newtype Query a = Query (StateT PrivacyState IO a)
 type Budget = Double
 
 -- | Run a query with given privacy budget
+-- This initializes the new privacy state and executes the query.
 runQuery :: Query a -> Budget -> IO a
-runQuery = undefined
+runQuery (Query q) budget = do
+    gen <- createSystemRandom
+    let initialState = PrivacyState {epsilonUsed = 0, epsilonBudget = budget, randomGen = gen}
+    evalStateT q initialState
 
 -- ============================================================================
 -- Budget Management
 -- ============================================================================
 
 -- | Force spending epsilon budget, throwing error if insufficient
+-- Reads epsilonUsed and epsilonBudget from state and updates epsilonUsed unless it would exceed budget.
 checkBudget :: Double -> Query ()
-checkBudget = undefined
+checkBudget epsilon = do
+    st <- get
+    let newUsed = epsilonUsed st + epsilon
+        total   = epsilonBudget st
+    if newUsed > (total + 1e-9) -- small tolerance for floating point drift
+        then liftIO $ throwIO (InsufficientBudget total newUsed)
+    else put st{epsilonUsed = newUsed}
 
 -- | Get the random generator from the query state
+-- This allows noise generation functions to access the shared generator.
 getGenerator :: Query GenIO
-getGenerator = undefined
+getGenerator = randomGen <$> get

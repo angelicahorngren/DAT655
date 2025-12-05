@@ -26,6 +26,7 @@ module Core (
 ) where
 
 import GHC.TypeLits
+import Control.Exception (Exception) -- For making PrivacyError an instance of Exception
 
 -- ============================================================================
 -- Core Data Types
@@ -58,7 +59,9 @@ data PrivacyError
       InsufficientBudget Double Double
     | -- | Invalid parameter error
       InvalidParameter String
-    deriving (Show, Eq)
+    deriving (Show, Eq) -- Making PrivacyError an instance of Exception
+
+instance Exception PrivacyError
 
 -- ============================================================================
 -- Utility Functions
